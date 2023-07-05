@@ -18,8 +18,8 @@ namespace POC.EntityIntelligence
                 string query = Console.ReadLine();
 
                 var standardAiDataClient = new AIDataClient(
-                    openAIKey: "xxxxx",
-                    connectionString: "DATA SOURCE=localhost;DATABASE=IATeste;UID=sa;PWD=xxxxxx;");
+                    openAIKey: "",
+                    connectionString: "DATA SOURCE=localhost;DATABASE=IATeste;UID=sa;PWD=;");
 
 
                 IEnumerable<dynamic> results =

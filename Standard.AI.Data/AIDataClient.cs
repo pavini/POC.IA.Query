@@ -45,9 +45,9 @@ namespace Standard.AI.Data
                     {
                         Request = new CompletionRequest
                         {
-                            Prompts = new string[] { $"Your are the best MS SQL query generator. Respond ONLY with code. Do not return any other text, only code. Given a MS SQL Server db with the following tables: " +
+                            Prompts = new string[] { $"Your are the best MS SQL query generator. Respond ONLY with code., only code. Given a MS SQL Server db with the following tables: " +
                             $"{fullQuery}" +
-                            $" Translate the following request into a MS SQL Server query and give it alias for all coluns.: {natualQuery}" },
+                            $"  Do not return any other text, only code and Translate the following request into a MS SQL Server query and give it alias for all coluns: {natualQuery}" },
 
                             Model = "text-davinci-003",
                             MaxTokens = 100
@@ -56,6 +56,12 @@ namespace Standard.AI.Data
 
                     var result = await openAIClient.Completions.PromptCompletionAsync(inputCompletion);
                     var sql = result.Response.Choices[0].Text;
+
+                    int index = sql.IndexOf("SELECT");
+                    if (index >= 0)
+                    {
+                        sql = sql.Substring(index);
+                    }
 
                     if (sql.Contains("DELETE") is true)
                     {
