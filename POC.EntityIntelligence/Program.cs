@@ -18,8 +18,8 @@ namespace POC.EntityIntelligence
                 string query = Console.ReadLine();
 
                 var standardAiDataClient = new AIDataClient(
-                    openAIKey: "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",
-                    connectionString: "DATA SOURCE=localhost;DATABASE=IATeste;UID=sa;PWD=123456789;");
+                    openAIKey: "xxxxx",
+                    connectionString: "DATA SOURCE=localhost;DATABASE=IATeste;UID=sa;PWD=xxxxxx;");
 
 
                 IEnumerable<dynamic> results =
@@ -29,31 +29,90 @@ namespace POC.EntityIntelligence
             }
         }
 
+        //private static void PrintDynamicList(IEnumerable<dynamic> dynamicList)
+        //{
+        //    List<string> list = new List<string>();
+
+        //    if (dynamicList.Count() < 1)
+        //    {
+        //        Console.WriteLine("Não encontramos nehum registro.");
+        //    }
+        //    else
+        //    {
+        //        foreach (var dynamicObject in dynamicList)
+        //        {
+        //            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(dynamicObject))
+        //            {
+        //                string name = descriptor.Name;
+        //                object value = descriptor.GetValue(dynamicObject);
+
+        //                if (list.Contains(name + value) is false)
+        //                {
+        //                    list.Add(name + value);
+        //                    Console.WriteLine("{0}: {1}", name, value);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private static void PrintDynamicList(IEnumerable<dynamic> dynamicList)
+        //{
+        //    List<string> list = new List<string>();
+
+        //    if (dynamicList.Count() < 1)
+        //    {
+        //        Console.WriteLine("Não encontramos nehum registro.");
+        //    }
+        //    else
+        //    {
+        //        foreach (var dynamicObject in dynamicList)
+        //        {
+        //            // Verifica se o objeto é um IDictionary
+        //            if (dynamicObject is IDictionary<string, object> properties)
+        //            {
+        //                foreach (var property in properties)
+        //                {
+        //                    string name = property.Key;
+        //                    object value = property.Value;
+
+        //                    if (list.Contains(name + value) is false)
+        //                    {
+        //                        list.Add(name + value);
+        //                        Console.WriteLine("{0}: {1}", name, value);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
         private static void PrintDynamicList(IEnumerable<dynamic> dynamicList)
         {
-            List<string> list = new List<string>();
-
             if (dynamicList.Count() < 1)
             {
-                Console.WriteLine("Não encontramos nehum registro.");
+                Console.WriteLine("Não encontramos nenhum registro.");
             }
             else
             {
                 foreach (var dynamicObject in dynamicList)
                 {
-                    foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(dynamicObject))
+                    // Verifica se o objeto é um IDictionary
+                    if (dynamicObject is IDictionary<string, object> properties)
                     {
-                        string name = descriptor.Name;
-                        object value = descriptor.GetValue(dynamicObject);
-
-                        if (list.Contains(name + value) is false)
+                        foreach (var property in properties)
                         {
-                            list.Add(name + value);
+                            string name = property.Key;
+                            object value = property.Value;
+
+                            // Imprime o nome da propriedade e o valor
                             Console.WriteLine("{0}: {1}", name, value);
                         }
                     }
                 }
             }
         }
+
+
     }
 }
