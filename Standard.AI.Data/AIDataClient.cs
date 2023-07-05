@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -65,12 +66,12 @@ namespace Standard.AI.Data
 
                     if (sql.Contains("DELETE") is true)
                     {
-                        throw new Exception("Não é permitido remover registros.");
+                        return AddReturnMessage("Não é permitido remover registros."); ;
                     }
 
                     if (sql.Contains("UPDATE") is true)
                     {
-                        throw new Exception("Não é permitido remover registros.");
+                        return AddReturnMessage("Não é permitido remover registros."); ;
                     }
 
                     if (sql.Contains("SELECT") is true)
@@ -78,9 +79,9 @@ namespace Standard.AI.Data
                         if (sql.IndexOf("SELECT") is not 0)
                             sql = sql.Remove(0, sql.IndexOf("SELECT"));
 
-                        var students = connection.Query(sql);
+                        var queryResult = connection.Query(sql);
 
-                        return students;
+                        return queryResult;
                     }
 
                     throw new Exception("Não foi possível processar o pedido. Tente novamente.");
@@ -88,8 +89,18 @@ namespace Standard.AI.Data
             }
             catch (Exception ex)
             {
-                throw new Exception("Não foi possível processar o pedido. Tente novamente.");
+                throw new Exception(ex.Message);
             }
+        }
+
+        private static List<dynamic> AddReturnMessage(string value)
+        {
+            dynamic obj = new ExpandoObject();
+            obj.Mensagem = value;
+
+            var dynamicList = new List<dynamic> { obj };
+
+            return dynamicList;
         }
 
         private string GetDescriptiveOfAllTables(IEnumerable<IGrouping<dynamic, dynamic>> allTables)
